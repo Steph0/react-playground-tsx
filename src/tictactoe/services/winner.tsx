@@ -1,6 +1,6 @@
 import { Coup } from "../enum/Coup";
 
-const combinations = [
+const COMBINATIONS = [
     [0, 1, 2],
     [3, 4, 5],
     [6, 7, 8],
@@ -9,9 +9,15 @@ const combinations = [
     [2, 5, 8],
     [0, 4, 8],
     [2, 4, 6],
-  ];
+];
 
 
-  export function hasWinner(board: Array<Coup>) : void {
-
-  }
+export function hasWinner(board: Array<Coup>): Coup | undefined {
+    for (const combination of COMBINATIONS) {
+        const [a, b, c] = combination;
+        if (board[a] && board[a] === board[b] && board[b] === board[c]) {
+            return board[a];
+        }
+    }
+    return undefined;
+}

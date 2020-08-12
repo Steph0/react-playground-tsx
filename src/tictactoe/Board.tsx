@@ -1,35 +1,39 @@
 import React from 'react';
 import { Coup } from './enum/Coup';
 import { Square } from './square/Square';
+import { hasWinner } from './services/winner';
 
 interface IBoardProps { }
 
 interface IBoardState {
+    winner?: Coup,
     coupType: Coup,
     playground: Array<Coup>
 }
 
 export class Board extends React.Component<IBoardProps, IBoardState> {
 
-    state: Readonly<IBoardState> = { coupType: Coup.X, playground: [] };
+    state: Readonly<IBoardState> = { coupType: Coup.X, playground: new Array(9).fill(null) };
 
-    constructor(props: IBoardProps) {
-        super(props);
-        this.setState({ playground: new Array(9).fill(null) });
-    }
+    handleSquareClick(index: number): void {
+        if (this.state.winner) {
+            // prevent click
+            return;
+        }
 
-    handleSquareClick(index: number) {
         // Important to work on a copy to not mutate state directly
         const playground = [...this.state.playground];
         playground[index] = this.state.coupType;
 
+        const winner = hasWinner(playground);
         this.setState({
+            winner,
             coupType: this.state.coupType === Coup.X ? Coup.O : Coup.X,
             playground
         });
     }
 
-    renderSquare(index: number) {
+    renderSquare(index: number): JSX.Element {
         return (
             <Square
                 value={this.state.playground[index]}
@@ -38,7 +42,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     }
 
 
-    render() {
+    render(): JSX.Element {
         const status = 'Next player: X';
 
         return (
