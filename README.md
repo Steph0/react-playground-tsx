@@ -1,3 +1,17 @@
+React playground
+================
+
+# Description
+
+## TicTacToe
+
+Implements basic tictactoe playground project from [reactjs.org](https://fr.reactjs.org/tutorial/tutorial.html) + 
+* use of Typescript
+* feat: highlight last coup played
+
+
+# Run the project
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

@@ -1,4 +1,4 @@
-import { Coup } from "../enum/Coup";
+import { Coup } from "../dto/Coup";
 
 const COMBINATIONS = [
     [0, 1, 2],
