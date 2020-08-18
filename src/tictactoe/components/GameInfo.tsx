@@ -19,10 +19,10 @@ export class GameInfo extends React.Component<IGameInfoProps>{
 
     render(): JSX.Element {
         return (
-            <div>
+            <React.Fragment>
                 <div>{this.renderGameStatus()}</div>
                 <ol></ol>
-            </div>
+            </React.Fragment>
         );
     }
 

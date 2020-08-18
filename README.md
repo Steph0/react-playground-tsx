@@ -8,6 +8,7 @@ React playground
 Implements basic tictactoe playground project from [reactjs.org](https://fr.reactjs.org/tutorial/tutorial.html) + 
 * use of Typescript
 * feat: highlight last coup played
+* feat: who won
 
 
 # Run the project
