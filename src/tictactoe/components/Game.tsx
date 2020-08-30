@@ -1,19 +1,20 @@
 import React from 'react';
 import { Board } from './Board';
 import { Coup } from '../dto/Coup';
-import { hasWinner } from '../services/winner';
+import { hasWinner } from '../services/WinnerService';
 import { GameInfo } from './GameInfo';
+import { Winner } from '../dto/Winner';
 
 interface IGameState {
     winner?: Coup,
-    coupType: Coup,
-    lastCoupIdx?: number,
+    nextCoupType: Coup,
+    cellsHighlighted?: Array<number>,
     playground: Array<Coup>
 }
 
 export class Game extends React.Component {
 
-    state: Readonly<IGameState> = { coupType: Coup.X, playground: new Array(9).fill(null) };
+    state: Readonly<IGameState> = { nextCoupType: Coup.X, playground: new Array(9).fill(null) };
 
     handleSquareClick(index: number): void {
 
@@ -23,14 +24,18 @@ export class Game extends React.Component {
             // prevent click if we have a winner of i that cell is already filled
             return;
         }
+        // Place coup played
+        playground[index] = this.state.nextCoupType;
 
-        playground[index] = this.state.coupType;
+        // Check game state
+        const winnerFound = hasWinner(playground);
+        const winner = winnerFound?.coup;
+        const cellsHighlighted = (winnerFound) ? winnerFound.combination : [index];
 
-        const winner = hasWinner(playground);
         this.setState({
             winner,
-            lastCoupIdx: index,
-            coupType: (this.state.coupType === Coup.X) ? Coup.O : Coup.X,
+            cellsHighlighted,
+            nextCoupType: (this.state.nextCoupType === Coup.X) ? Coup.O : Coup.X,
             playground
         });
     }
@@ -43,12 +48,12 @@ export class Game extends React.Component {
                 <div className="game-board">
                     <Board
                         playground={this.state.playground}
-                        lastCoupIdx={this.state.lastCoupIdx}
+                        cellsHighlighted={this.state.cellsHighlighted}
                         onClick={(index) => this.handleSquareClick(index)}
                     />
                 </div>
                 <div className="game-info">
-                    <GameInfo winner={this.state.winner} nextPlayer={this.state.coupType} history={[]} />
+                    <GameInfo winner={this.state.winner} nextPlayer={this.state.nextCoupType} history={[]} />
                 </div>
             </div>
         );

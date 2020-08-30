@@ -4,17 +4,21 @@ import { Square } from './Square';
 
 interface IBoardProps {
     playground: Array<Coup>,
-    lastCoupIdx?: number,
+    cellsHighlighted?: Array<number>,
     onClick(index: number): void
 }
 
 export class Board extends React.Component<IBoardProps> {
 
+    getSquareClassNames(index: number, cellsHighlighted: Array<number>) {
+        return cellsHighlighted.includes(index) ? "highlight" : "";
+    }
+
     renderSquare(index: number): JSX.Element {
         return (
             <Square
                 value={this.props.playground[index]}
-                highlight={this.props.lastCoupIdx === index}
+                classNames={this.getSquareClassNames(index, this.props.cellsHighlighted || [])}
                 onClick={() => this.props.onClick(index)} />
         );
     }
