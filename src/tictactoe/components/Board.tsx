@@ -4,11 +4,15 @@ import { Square } from './Square';
 
 interface IBoardProps {
     playground: Array<Coup>,
-    cellsHighlighted?: Array<number>,
+    cellsHighlighted: Array<number>,
     onClick(index: number): void
 }
 
 export class Board extends React.Component<IBoardProps> {
+
+    static defaultProps = {
+        cellsHighlighted: []
+    }
 
     getSquareClassNames(index: number, cellsHighlighted: Array<number>) {
         return cellsHighlighted.includes(index) ? "highlight" : "";
@@ -17,8 +21,9 @@ export class Board extends React.Component<IBoardProps> {
     renderSquare(index: number): JSX.Element {
         return (
             <Square
+                key={index}
                 value={this.props.playground[index]}
-                classNames={this.getSquareClassNames(index, this.props.cellsHighlighted || [])}
+                classNames={this.getSquareClassNames(index, this.props.cellsHighlighted)}
                 onClick={() => this.props.onClick(index)} />
         );
     }
@@ -37,11 +42,11 @@ export class Board extends React.Component<IBoardProps> {
     render(): JSX.Element {
 
         return (
-            <React.Fragment>{
-                [[0, 1, 2], [3, 4, 5], [6, 7, 8]].map((indexes: Array<number>) => {
-                    return this.renderRow(indexes);
-                })
-            }</React.Fragment>
+            <React.Fragment>
+                {this.renderRow([0, 1, 2])}
+                {this.renderRow([3, 4, 5])}
+                {this.renderRow([6, 7, 8])}
+            </React.Fragment>
         );
     }
 }
